@@ -1,6 +1,17 @@
 class DataTable {
-    constructor(id) {
+    constructor(id,data) {
         this.id = id;
+        this.columns = Object.keys(data[0]);
+    }  
+    initialize(id) {
+        let table = d3.select(id);
+        
+        this.columns.forEach(column => {
+            table.append("th")
+            .text(column);
+        });
+        
+        
     }
 
     update(data, columns) {

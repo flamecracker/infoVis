@@ -17,17 +17,31 @@
     <script src="components/histogram.js"></script>
     <script src="components/pc.js"></script>
     <script src="components/datatable.js"></script>
-
+    <script src="components/barchart.js"></script>
+    <script src="components/piechart.js"></script>
+    <script src="components/heatmap.js"></script>
+    <script>
+        window.onload = function() {
+            //section for Set Radion Button
+            var radios = document.getElementsByClassName('form-check-input'); 
+            for(var i = 0; i < radios.length; i++) {
+                var radio = radios[i];
+                var label = radio.nextElementSibling; 
+                label.innerHTML = radio.value; 
+            }
+            
+        };
+    </script>
 
     <title>Heart Disease</title>
     <style>
         body {
-            background: #eee;
+            background: #dde;
             overflow-y: scroll;
         }
 
         .container {
-            width: 800px;
+            width: 1000px;
             background: white;
         }
 
@@ -35,6 +49,10 @@
             stroke-width: 1;
             stroke: gray;
             r: 5;
+        }
+
+        .title-background {
+            background: #eef;
         }
     </style>
 </head>
@@ -102,73 +120,207 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
-            <svg width="400" height="400" id="scatterplot">
-            </svg>
+        <div class="text-center"  style="display: flex; justify-content: space-between;">
+            <div class="title-container" style = "width: 480px;">
+                <h2 class="title title-background">Patient Distribution</h2>
+                <svg width="400" height="400" id="scatterplot">
+                </svg>
+            </div>
+            <div class="title-container" style = "width: 480px;">
+                <h2 class="title title-background">HeartDisease</h2>
+                <svg width="400" height="400" id="histogram">
+                </svg>
+            </div>
             <div class="tooltip bs-tooltip-top show" id="sc-tooltip" role="tooltip" style="display:none">
                 <div class="tooltip-arrow"></div>
                 <div class="tooltip-inner">
                     Some tooltip text!
                 </div>
             </div>
-
-            <svg width="400" height="400" id="histogram">
-            </svg>
+            
+            
         </div>
+        <div class="title-background" style="display: flex; justify-content: center;">
+            <h1 class="title">Data Table for brushed data</h2>
+        </div>
+        <div class="table-container" style="overflow: auto; height: 500px;">
+            <table class="table table-striped text-center">
+                <thead>
+                    <tr id = "table-header">
+                        
+                    </tr>
+                </thead>
+                <tbody id="data-table">
 
+                </tbody>
+            </table>
+        </div>
+        <div class="row pt-2" style="display: flex; align-items: center;">
+            <h1 class = "title-background" style="margin-right: 10px;margin-left: 10px; width: 70%;">Disease</h1>
+            <select name="healthConditions" style="width: 15%;">
+                <option value="Asthma">Asthma</option>
+                <option value="Diabetic">Diabetic</option>
+                <option value="HeartDisease">Heart Disease</option>
+                <option value="KidneyDisease">Kidney Disease</option>
+                <option value="SkinCancer">Skin Cancer</option>
+                <option value="Stroke">Stroke</option>
+            </select>
+            <label style="display: flex; align-items: center; width: 10%;">
+                <input type="checkbox" style="width: 15%;" role="switch" id="isRatio" checked>
+                Ratio
+            </label>
+        </div>
         <div class="text-center">
-            <svg id="pc">
+            <svg width="800" height="400" id="agehistogram">
             </svg>
         </div>
+        <div class="title-background" style="display: flex; justify-content: center;">
+            <h1 class="title pie">Health habits of heart disease patients</h2>
+        </div>
+        <div class="d-flex flex-wrap justify-content-center">
+            <div class="text-center">
+                <h2 class="title" id="pieValue">DiffWalking</h2>
+                <svg width="400" height="400" class="piechart">
+                </svg>
+            </div>
+            <div class="text-center">
+                <h2 class="title" id="pieValue">Smoking</h2>
+                <svg width="400" height="400" class="piechart">
+                </svg>
+            </div>
+            <div class="text-center">
+                <h2 class="title" id="pieValue">AlcoholDrinking</h2>
+                <svg width="400" height="400" class="piechart">
+                </svg>
+            </div>
+            <div class="text-center">
+                <h2 class="title" id="pieValue">PhysicalActivity</h2>
+                <svg width="400" height="400" class="piechart">
+                </svg>
+            </div>
+        </div>
+        <div class="title-background" style="display: flex; justify-content: center;">
+            <h1 class="title pie">Complications of heart disease patients</h2>
+        </div>
+        <div class="row pt-2">
+            <div class="col-1 text-end pe-2"><strong>X:</strong></div>
+            <div class="col-11">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-disease" value="Asthma" id="x-sl"
+                        checked>
+                    <label class="form-check-label" for="x-sl">SepalLength</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-disease" value="Diabetic" id="x-sw">
+                    <label class="form-check-label" for="x-sw">SepalWidth</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-disease" value="KidneyDisease" id="x-pl">
+                    <label class="form-check-label" for="x-pl">PetalLength</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-disease" value="SkinCancer" id="x-pw">
+                    <label class="form-check-label" for="x-pw">PetalWidth</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="x-disease" value="Stroke" id="x-pw">
+                    <label class="form-check-label" for="x-pw">PetalWidth</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-1 text-end pe-2"><strong>Y:</strong></div>
+            <div class="col-11">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="y-disease" value="Asthma" id="y-sl">
+                    <label class="form-check-label" for="y-sl">SepalLength</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="y-disease" value="Diabetic" id="y-sw"
+                        checked>
+                    <label class="form-check-label" for="y-sw">SepalWidth</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="y-disease" value="KidneyDisease" id="y-pl">
+                    <label class="form-check-label" for="y-pl">PetalLength</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="y-disease" value="SkinCancer" id="y-pw">
+                    <label class="form-check-label" for="y-pw">PetalWidth</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="y-disease" value="Stroke" id="y-pw">
+                    <label class="form-check-label" for="y-pw">PetalWidth</label>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <svg width="900" height="900" id="heatmap">
+            </svg>
+        </div>
+        
 
-        <table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th>Petal Length</th>
-                    <th>Petal Width</th>
-                    <th>Sepal Length</th>
-                    <th>Sepal Width</th>
-                    <th>Variety</th>
-                </tr>
-            </thead>
-            <tbody id="data-table">
-
-            </tbody>
-        </table>
+        
 
     </main>
 
     <script>
-        let data, brushedData, scatterplot, histogram, pc, dataTable;
+        let data, brushedData, scatterplot, histogram, dataTable;
+        let ageHistogram,piecharts, heatmap;
+        let pie_values, piechartObjects;
 
         function updateScatterplot() {
             let xVar = d3.select("input[type=radio][name=x-encoding]:checked").property("value");
             let yVar = d3.select("input[type=radio][name=y-encoding]:checked").property("value");
             let useColor = d3.select("#use-color").property("checked");
-            scatterplot.update(xVar, yVar, "variety", useColor);
+            scatterplot.update(xVar, yVar, "HeartDisease", useColor);
+        }
+
+        function updateageHistogram() {
+            let xVar = 'AgeCategory'
+            let yVar = d3.select("select[name=healthConditions]").property("value");
+            let isRatio = d3.select("#isRatio").property("checked");
+            ageHistogram.update(data, xVar, yVar, isRatio)
+            var title = document.querySelector("h1.pie");
+            title.textContent = 'Health habits of ' + yVar +' patients';
+            piecharts.each(function(d, i) {
+                piechartObjects[i].update(data,yVar,pie_values[i])
+            });
         }
 
         function updateHistogram() {
-            histogram.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
+            histogram.update(brushedData && brushedData.length > 0 ? brushedData : data, "HeartDisease");
         }
 
-        function updatePC() {
-            pc.update(brushedData && brushedData.length > 0 ? brushedData : data, "variety");
+        function updatePiechart(piechart,content) {
+            var select = d3.select("select[name=healthConditions]").property("value");
+            piechart.update(data,select,content);
+        }
+        function updateHeatMap() {
+            //let xVar = ['Stroke','Diabetic','Asthma','KidneyDisease','SkinCancer'];
+            let xVar = d3.select("input[type=radio][name=x-disease]:checked").property("value");
+            let yVar = d3.select("input[type=radio][name=y-disease]:checked").property("value");
+            heatmap.update(xVar,yVar);
         }
 
         function updateDataTable() {
-            dataTable.update(brushedData && brushedData.length > 0 ? brushedData : data, data.columns)
+            dataTable.update(brushedData && brushedData.length > 0 ? brushedData : data, data.columns);
         }
+        
 
         d3.csv("https://raw.githubusercontent.com/flamecracker/infoVis/main/heart_2020_cleaned_reduced.csv")
             .then(csvData => {
                 csvData.forEach(d => {
                     // quantitative
-                    
                     d["BMI"] = +d["BMI"];
                     d["PhysicalHealth"] = +d["PhysicalHealth"];
                     d["MentalHealth"] = +d["MentalHealth"];
                     d["SleepTime"] = +d["SleepTime"];
+                    // 'Diabetic' value update
+                    if (d["Diabetic"] !== "Yes") {
+                        d["Diabetic"] = "No";
+                    }
                 });
                 
                 data = csvData;
@@ -184,23 +336,43 @@
                 scatterplot.on("brush", (brushedItems) => {
                     brushedData = brushedItems;
                     updateHistogram();
-                    updatePC();
                     updateDataTable();
                 });
 
                 histogram = new Histogram("#histogram");
                 histogram.initialize();
-
                 updateHistogram();
+                
+                pie_values = [];
+                d3.selectAll('#pieValue').each(function() {
+                    pie_values.push(d3.select(this).text());
+                });
+                piecharts = d3.selectAll(".piechart");
+                piechartObjects = [] ;
+                piecharts.each(function(d, i) {
+                    let piechart = new PieChart(this, 300, 300);
+                    piechart.initialize();
+                    updatePiechart(piechart,pie_values[i]);
+                    piechartObjects.push(piechart);
+                });
 
-                pc = new PC("#pc", data, ["BMI", "PhysicalHealth", "MentalHealth", "SleepTime"]);
-                pc.initialize();
-
-                updatePC();
-
-                dataTable = new DataTable("#data-table");
-
+                ageHistogram = new Barchart("#agehistogram",600,250)
+                ageHistogram.initialize();
+                updateageHistogram();
+                d3.selectAll("select[name=healthConditions]").on("change", updateageHistogram);
+                d3.selectAll("#isRatio").on("change", updateageHistogram);
+                
+                
+                dataTable = new DataTable("#data-table",data);
+                dataTable.initialize('#table-header');
                 updateDataTable();
+
+                heatmap = new Heatmap('#heatmap',data);
+                heatmap.initialize();
+                updateHeatMap();
+                d3.selectAll("input[type=radio][name=x-disease]").on("change", updateHeatMap);
+                d3.selectAll("input[type=radio][name=y-disease]").on("change", updateHeatMap);
+                
             })
     </script>
 
