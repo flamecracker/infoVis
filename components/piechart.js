@@ -19,21 +19,22 @@ class PieChart {
         this.legend = this.svg.append("g")
             .attr("transform", `translate(${this.width}, ${this.margin.top})`);
 
-        this.colorScale = d3.scaleOrdinal(d3.schemeCategory10); // 색상 스케일 설정
+        this.colorScale = d3.scaleOrdinal().domain(['Yes', 'No'])
+        .range(['#ff9911', '#1188ee']); // 색상 스케일 설정
         this.pie = d3.pie().value(d => d.value); // Pie layout 설정
         this.arc = d3.arc().innerRadius(0).outerRadius(this.radius); // Arc 설정
     }
 
     update(data, disease, filterColumn) {
         
-        const filteredData = data.filter(d => d[filterColumn] === 'Yes');
+        const filteredData = data.filter(d => d[disease] === 'Yes');
     
         const counts = {};
         filteredData.forEach(d => {
-            if (!counts[d[disease]]) {
-                counts[d[disease]] = 0;
+            if (!counts[d[filterColumn]]) {
+                counts[d[filterColumn]] = 0;
             }
-            counts[d[disease]]++;
+            counts[d[filterColumn]]++;
         });
     
         const total = filteredData.length;

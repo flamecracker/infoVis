@@ -34,25 +34,26 @@ class Heatmap {
         this.xVar = xVar;
         this.yVar = yVar;
 
-        const filteredData = this.data.filter(d => d['HeartDisease'] === 'Yes');
+        const totalCounts = new Map();
+        const heartDiseaseCounts = new Map();
 
-        const counts = new Map();
-
-        filteredData.forEach(d => {
+        this.data.forEach(d => {
             const key = `${d[xVar]},${d[yVar]}`;
-            counts.set(key, (counts.get(key) || 0) + 1);
+            totalCounts.set(key, (totalCounts.get(key) || 0) + 1);
+            if (d['HeartDisease'] === 'Yes') {
+                heartDiseaseCounts.set(key, (heartDiseaseCounts.get(key) || 0) + 1);
+            }
         });
 
-        const xValues = Array.from(new Set(filteredData.map(d => d[xVar])));
-        const yValues = Array.from(new Set(filteredData.map(d => d[yVar])));
-        const maxCount = d3.max(Array.from(counts.values()));
-
+        const xValues = Array.from(new Set(this.data.map(d => d[xVar])));
+        const yValues = Array.from(new Set(this.data.map(d => d[yVar])));
+        
         this.xScale.domain(xValues);
         this.yScale.domain(yValues);
         this.colorScale.domain([0, 1]);
 
         const cells = this.container.selectAll('rect')
-            .data(filteredData)
+            .data(this.data)
             .join('rect')
             .transition()
             .attr("x", d => this.xScale(d[xVar]))
@@ -61,7 +62,10 @@ class Heatmap {
             .attr("height", this.yScale.bandwidth())
             .attr("fill", d => {
                 const key = `${d[xVar]},${d[yVar]}`;
-                return this.colorScale(counts.get(key)/maxCount);
+                const totalCount = totalCounts.get(key) || 0;
+                const heartDiseaseCount = heartDiseaseCounts.get(key) || 0;
+                const ratio = heartDiseaseCount / totalCount;
+                return this.colorScale(ratio);
         });
     
         this.xAxis
